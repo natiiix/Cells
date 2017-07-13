@@ -1,9 +1,9 @@
 """This is the main module"""
 
-import numpy as np
 import time
+import numpy as np
 
-start_time = time.time()
+START_TIME = time.time()
 
 INIT_CELL_COUNT = 100000
 TARGET_ITERATIONS = 100000
@@ -44,4 +44,4 @@ for i in range(TARGET_ITERATIONS):
     if not i % 1000:
         print(i, len(CELLS), sum(CELLS))
 
-print("Done!", time.time() - start_time, "seconds")
+print("Done!", time.time() - START_TIME, "seconds")
