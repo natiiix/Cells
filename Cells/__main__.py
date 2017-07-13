@@ -1,47 +1,37 @@
 """This is the main module"""
 
 import time
+import constants as const
+import Cell
 import numpy as np
+
+def main():
+    """The main function of the script."""
+    cells = []
+
+    for _ in range(const.INIT_CELL_COUNT):
+        cells.append(Cell.Cell(
+            np.random.uniform(-const.INIT_CELL_POSITION, const.INIT_CELL_POSITION),
+            np.random.uniform(-const.INIT_CELL_VELOCITY, const.INIT_CELL_VELOCITY),
+            np.random.uniform(-const.INIT_CELL_MASS, const.INIT_CELL_MASS)))
+
+    for i in range(const.TARGET_ITERATIONS):
+        max_pos = 0.0
+        min_pos = 0.0
+
+        for cel in cells:
+            cel.move()
+
+            if cel.position > max_pos:
+                max_pos = cel.position
+
+            if cel.position < min_pos:
+                min_pos = cel.position
+
+        print("[%i] Max: %f | Min: %f" % (i, max_pos, min_pos))
 
 START_TIME = time.time()
 
-INIT_CELL_COUNT = 100000
-TARGET_ITERATIONS = 100000
-CELL_SPLIT_LIMIT = 1.0
-
-CELLS = list(np.random.uniform(0.0, 1.0, INIT_CELL_COUNT))
-
-for i in range(INIT_CELL_COUNT):
-    CELLS.append(np.random.rand())
-
-for i in range(TARGET_ITERATIONS):
-    attacker = np.random.randint(0, len(CELLS))
-
-    defender = attacker
-    while defender == attacker:
-        defender = np.random.randint(0, len(CELLS))
-
-    if CELLS[attacker] >= CELLS[defender]:
-        CELLS[attacker] += CELLS[defender]
-
-        if CELLS[attacker] >= CELL_SPLIT_LIMIT:
-            new_value = CELLS[attacker] / 2.0
-            CELLS[attacker] = new_value
-            CELLS.append(new_value)
-
-        CELLS.pop(defender)
-
-    else:
-        CELLS[defender] += CELLS[attacker]
-
-        if CELLS[defender] >= CELL_SPLIT_LIMIT:
-            new_value = CELLS[defender] / 2.0
-            CELLS[defender] = new_value
-            CELLS.append(new_value)
-
-        CELLS.pop(attacker)
-
-    if not i % 1000:
-        print(i, len(CELLS), sum(CELLS))
+main()
 
 print("Done!", time.time() - START_TIME, "seconds")
