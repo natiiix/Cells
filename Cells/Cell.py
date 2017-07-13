@@ -19,14 +19,17 @@ class Cell:
 
         # The distance is lower than the Cell's velocity
         if abs(pos_diff) < self.max_velocity:
+            # Move to the position of the target cell
             self.position += pos_diff
+            # Consume the target cell's mass
             self.mass += target.mass
             return True
         # The distance is higher and the position is higher
         elif pos_diff > 0.0:
+            # Move as close to the target as the cell's velocity allows
             self.position += self.max_velocity
             return False
-        # The distance is higher and the position is lower
+        # Same as above, but the position is lower instead
         else:
             self.position -= self.max_velocity
             return False
